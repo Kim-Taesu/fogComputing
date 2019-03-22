@@ -7,8 +7,7 @@
 2-1. fog노드는 도커 컨테이너로 실행한다. (hbase, java)
 3-1. fog-cloud 데이터 통신은 멀티 쓰레드 통신으로 한다.
 
-###데이터###
-
-
+### 데이터
+-------------------------------
 데이터는 서울 텍시데이터셋을 이용한다.
 url : http://data.seoul.go.kr/dataList/datasetView.do?infId=OA-12066&srvType=F&serviceKind=1
