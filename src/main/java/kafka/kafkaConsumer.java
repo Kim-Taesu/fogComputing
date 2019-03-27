@@ -17,15 +17,19 @@ public class kafkaConsumer {
         configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");    // key deserializer
         configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  // value deserializer
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(configs);    // consumer 생성
-        consumer.subscribe(Arrays.asList("test20180604"));      // topic 설정
+        consumer.subscribe(Arrays.asList("1168","1165","1171","1144"));      // topic 설정
         while (true) {  // 계속 loop를 돌면서 producer의 message를 띄운다.
             ConsumerRecords<String, String> records = consumer.poll(500);
             for (ConsumerRecord<String, String> record : records) {
                 String s = record.topic();
+
+                System.out.println(s);
                 if ("test20180604".equals(s)) {
                     System.out.println(record.value());
                 } else {
-                    throw new IllegalStateException("get message on topic " + record.topic());
+                    continue;
+//                    throw new IllegalStateException("get message on topic " + record.topic());
+
                 }
             }
         }

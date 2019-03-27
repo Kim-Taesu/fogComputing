@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python3 ./southKorea.py $1
+
+cp ./data/test.svg /home/hp/eclipse-web/database_lab_homepage/web/pages/test.svg

@@ -14,24 +14,33 @@ public class client {
             CS = new Socket();
             CS.connect(new InetSocketAddress("117.16.123.192", 4040));
 
-            File dataDirectory = new File("src/data/release/taxi_log_2008_by_id");
-            File[] dataList = dataDirectory.listFiles();
+            File file = new File("C:\\Users\\KTS\\Desktop\\data\\TaxiMach_Link_Dataset_Full_201709.txt");
             String line = "";
+            boolean firstLine = true;
 
 
             while (true) {
-                for (File tmp : dataList) {
-                    System.out.println(tmp);
-                    FileReader fileReader = new FileReader(tmp);
-                    BufferedReader bufReader = new BufferedReader(fileReader);
-                    while ((line = bufReader.readLine()) != null) {
-                        byte[] as = line.getBytes("UTF-8");
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufReader = new BufferedReader(fileReader);
+                while ((line = bufReader.readLine()) != null) {
+                    if (firstLine) {
+                        firstLine = false;
+                        continue;
+                    }
+                    String[] lineTmp = line.split(",");
+                    if (!lineTmp[4].equals("")) {
+                        String newLine = lineTmp[0] + "," + lineTmp[1] + "," + lineTmp[2] + "," + lineTmp[4];
+                        System.out.println(newLine);
+
+
+                        byte[] as = newLine.getBytes("UTF-8");
                         OutputStream OS = CS.getOutputStream();
                         OS.flush();
                         OS.write(as);
-                        Thread.sleep(1000);
                     }
+                    Thread.sleep(1000);
                 }
+
             }
 
         } catch (Exception e) {
