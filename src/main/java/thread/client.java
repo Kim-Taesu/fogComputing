@@ -38,7 +38,7 @@ public class client {
                         OS.flush();
                         OS.write(as);
                     }
-                    Thread.sleep(1000);
+                    Thread.sleep(500);
                 }
 
             }

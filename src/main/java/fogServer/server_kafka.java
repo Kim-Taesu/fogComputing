@@ -49,7 +49,7 @@ class userThread extends Thread {
                 String output = new String(bt, 0, size, "UTF-8");
 
                 String line[] = output.split(",");
-		System.out.println(output);
+                System.out.println(output);
 //		if(line.length!=4 || line[3].equals("")) continue;
                 String destination = line[3];
 //                String newLine = line[0] + "," + line[1] + "," + line[2] + "," + line[3];

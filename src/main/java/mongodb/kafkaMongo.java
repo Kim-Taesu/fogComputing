@@ -5,12 +5,20 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.DatagramSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+
+//시작하기 전
+// 1. 카프카 서버 start_thread_server 실행
+// 2. 클라우드 서버 startGetFog 실행
+// 3. client로 데이터 전송
+
 
 public class kafkaMongo {
     static SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -22,10 +30,10 @@ public class kafkaMongo {
     public static void sendCloud(String data) throws Exception {
         Socket socket = null;
         OutputStream os = null;
-        OutputStreamWriter osw =null;
+        OutputStreamWriter osw = null;
         BufferedWriter bw = null;
 
-        try{
+        try {
             socket = new Socket("117.16.123.194", 4040);
             os = socket.getOutputStream();
             osw = new OutputStreamWriter(os);
@@ -34,14 +42,14 @@ public class kafkaMongo {
             bw.write(data);
             bw.flush();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            try{
+        } finally {
+            try {
                 bw.close();
                 osw.close();
                 os.close();
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -126,10 +134,11 @@ public class kafkaMongo {
                 "1153", "1154", "1156", "1159",
                 "1162", "1165", "1168", "1171", "1174"));      // topic 설정
 
-
         while (true) {  // 계속 loop를 돌면서 producer의 message를 띄운다.
-            String sendData="";
-            Thread.sleep(1000 * 60*10);
+            String sendData = "";
+
+            //시간을 설정한다.
+            Thread.sleep(1000 * 60);
 
             ConsumerRecords<String, String> records = consumer.poll(500);
 //            System.out.println("!");
@@ -137,7 +146,7 @@ public class kafkaMongo {
                 String s = record.topic();
 //                System.out.println(s+ " || " + record.value());
                 addMongo(s, record.value());
-                sendData+=record.value()+"\n";
+                sendData += record.value() + "\n";
             }
 
             System.out.println(sendData);
