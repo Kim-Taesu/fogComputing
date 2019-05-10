@@ -14,6 +14,7 @@ client(device), fog server, kafka server, cloud server
 1. 도커를 사용하여 hbase with java 컨테이너를 띄운다.
 2. kafka server로부터 데이터를 받고 각 fog hbase 컨테이너에 저장.
 3. cloud server로 받은 데이터 전송
+4. getShowDetail class 를 이용하여 각 구의 시간별 택시 수를 확인한다.
 
 ###### cloud server
 1. 데이터를 받으면 파이썬을 통해 서울 택시 통계를 지도 파일로 출력한다. (svg file)
