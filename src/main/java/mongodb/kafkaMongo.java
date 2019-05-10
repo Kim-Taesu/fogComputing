@@ -1,6 +1,9 @@
 package mongodb;
 
-import com.mongodb.*;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -8,9 +11,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.DatagramSocket;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -21,11 +22,13 @@ import java.util.*;
 
 
 public class kafkaMongo {
-    static SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    static Date time = new Date();
+    static fogSetting fogSetting = new fogSetting();
+    static HashMap<String, Integer> fogPort;
+    static HashMap<Integer, int[]> fogBitMask;
 
-    static HashMap<String, Integer> fogInfo;
 
+    static int epsilon = 1;
+    static double qValue = 0.0;
 
     public static void sendCloud(String data) throws Exception {
         Socket socket = null;
@@ -37,7 +40,7 @@ public class kafkaMongo {
             socket = new Socket("117.16.123.194", 4040);
             os = socket.getOutputStream();
             osw = new OutputStreamWriter(os);
-            bw = new BufferedWriter(osw);            //서버로 전송을 위한 OutputStream
+            bw = new BufferedWriter(osw);           //서버로 전송을 위한 OutputStream
 
             bw.write(data);
             bw.flush();
@@ -55,12 +58,32 @@ public class kafkaMongo {
         }
     }
 
+    public static int[] addNoise(int[] originalBitMask, int[] fogBitMaskNoise) {
+        int[] result = new int[originalBitMask.length];
+        qValue = 1 / (Math.exp(epsilon) + 1);
+        System.out.print("noise : ");
+        for (int i = 0; i < originalBitMask.length; i++) {
+            double randomNum = (Math.random() * 1) + 0;
+            if (originalBitMask[i] == 0) {
+                if (randomNum < qValue) result[i] = 1 + fogBitMaskNoise[i];
+                else result[i] = 0 + fogBitMaskNoise[i];
+            } else {
+                if (randomNum < 0.5) result[i] = 1 + fogBitMaskNoise[i];
+                else result[i] = 0 + fogBitMaskNoise[i];
+            }
+            System.out.print(result[i] + " ");
+        }
+        System.out.println();
+        return result;
+    }
+
+
     public static void addMongo(String topic, String data) {
         String[] dataTmp = data.split(",");
 
         /**** Connect to MongoDB ****/
         // Since 2.10.0, uses MongoClient
-        MongoClient mongo = new MongoClient("192.168.99.100", fogInfo.get(topic));
+        MongoClient mongo = new MongoClient("192.168.99.100", fogPort.get(topic));
 
         /**** Get database ****/
         // if database doesn't exists, MongoDB will create it for you
@@ -75,32 +98,56 @@ public class kafkaMongo {
         BasicDBObject document = new BasicDBObject();
         document.put(dataTmp[0], dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
         table.insert(document);
+        mongo.close();
 
-        /**** Find and display ****/
-        DBCursor cursor = table.find();
 
-//        while (cursor.hasNext()) {
-//            System.out.println(cursor.next());
-//        }
+        /** Bit Mask **/
+        int fogPortNum = fogPort.get(topic);
+        int[] fogBit = fogSetting.getFogBitMask(fogPortNum);
+        int fogBitNum = fogSetting.getfogBitMaskIndex(topic);
+        fogBit[fogBitNum] += 1;
+        int originalTotal = 0;
 
+        System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
+        System.out.print("original : ");
+        for (int i = 0; i < fogBit.length; i++) {
+            System.out.print(fogBit[i] + " ");
+            originalTotal += fogBit[i];
+        }
+        System.out.println();
+
+        int[] noiseFogBit = addNoise(fogBit, fogSetting.getFogBitMaskNoise(fogPortNum));
+
+        fogSetting.setFogBitMask(fogPortNum, fogBit);
+        fogSetting.setFogBitMaskNoise(fogPortNum, noiseFogBit);
+        fogSetting.setFogBitMaskExpect(fogPortNum, expectNoise(noiseFogBit, originalTotal));
+    }
+
+    private static int[] expectNoise(int[] noiseFogBit, int n) {
+        int result[] = new int[noiseFogBit.length];
+        qValue = 1 / (Math.exp(epsilon) + 1);
+        System.out.print("expect : ");
+        for (int i = 0; i < noiseFogBit.length; i++) {
+            result[i] = (int) ((noiseFogBit[i] - n * qValue) / (0.5 - qValue));
+            System.out.print(result[i] + " ");
+        }
+        System.out.println();
+
+        return result;
     }
 
     public static void dropDB() {
-        Iterator<String> key = fogInfo.keySet().iterator();
+        Iterator<String> key = fogPort.keySet().iterator();
 
         while (key.hasNext()) {
             /**** Connect to MongoDB ****/
             // Since 2.10.0, uses MongoClient
-            MongoClient mongo = new MongoClient("192.168.99.100", fogInfo.get(key.next()));
+            MongoClient mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
 
             /**** Get database ****/
             // if database doesn't exists, MongoDB will create it for you
             DB db = mongo.getDB("testdb");
             db.dropDatabase();
-
-//            /**** Get database ****/
-//            // if database doesn't exists, MongoDB will create it for you
-//            db = mongo.getDB("testdb");
 //
             /**** Get collection / table from 'testdb' ****/
             // if collection doesn't exists, MongoDB will create it for you
@@ -110,9 +157,9 @@ public class kafkaMongo {
     }
 
     public static void main(String[] args) throws Exception {
-        fogPort fogPort = new fogPort();
-        fogPort.initFog();
-        fogInfo = fogPort.fog;
+        fogPort = fogSetting.getFogPort();
+        System.out.println(fogPort);
+        fogBitMask = fogSetting.getFogBitMask();
 
         dropDB();
         System.out.println("drop DB");
@@ -138,19 +185,14 @@ public class kafkaMongo {
             String sendData = "";
 
             //시간을 설정한다.
-            Thread.sleep(1000 * 60);
+            Thread.sleep(1000 * 10);
 
             ConsumerRecords<String, String> records = consumer.poll(500);
-//            System.out.println("!");
             for (ConsumerRecord<String, String> record : records) {
                 String s = record.topic();
-//                System.out.println(s+ " || " + record.value());
                 addMongo(s, record.value());
                 sendData += record.value() + "\n";
             }
-
-            System.out.println(sendData);
-
             sendCloud(sendData);
         }
     }

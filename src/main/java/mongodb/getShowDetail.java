@@ -14,16 +14,14 @@ import java.util.Iterator;
 
 
 public class getShowDetail {
-    HashMap<String, Integer> fog = new HashMap<String, Integer>();
+    HashMap<String, Integer> fogPort = new HashMap<String, Integer>();
     HashMap<String, Integer> sigunguFog = new HashMap<String, Integer>();
 
     public getShowDetail(int port) {
         try {
-            fogPort fogPort = new fogPort();
-            fogPort.initSigungu();
-            fogPort.initFog();
-            sigunguFog = fogPort.sigunguFog;
-            fog = fogPort.fog;
+            fogSetting fogSetting = new fogSetting();
+            sigunguFog = fogSetting.sigunguCode;
+            fogPort = fogSetting.fogPort;
 
             DatagramSocket ds = new DatagramSocket(port);
 
@@ -36,7 +34,7 @@ public class getShowDetail {
                 String location = new String(dp.getData()).trim();
 
                 String sigungiCode = sigunguFog.get(location).toString();
-                int fogNum = fog.get(sigungiCode);
+                int fogNum = fogPort.get(sigungiCode);
 
                 /**** Connect to MongoDB ****/
                 // Since 2.10.0, uses MongoClient
@@ -55,7 +53,6 @@ public class getShowDetail {
                 Iterator<DBObject> documentList = table.find().iterator();
                 String sendData = "";
                 while (documentList.hasNext()) {
-//                    System.out.println(documentList.next().toString());
                     String[] lineTmp = documentList.next().toString().split(" , ");
                     sendData += lineTmp[1].replace("}","") +"\n";
                 }
@@ -65,7 +62,7 @@ public class getShowDetail {
 
                 InetAddress ia = dp.getAddress();
 //                port = dp.getPort();
-//                System.out.println("client ip : " + ia + " , client port : " + port);
+//                System.out.println("sendData ip : " + ia + " , sendData port : " + port);
                 dp = new DatagramPacket(sendByte, sendByte.length, ia, port);
                 ds.send(dp);
             }
@@ -75,6 +72,6 @@ public class getShowDetail {
     }
 
     public static void main(String[] args) throws Exception {
-        new getShowDetail(30008);
+        new getShowDetail(30123);
     }
 }
