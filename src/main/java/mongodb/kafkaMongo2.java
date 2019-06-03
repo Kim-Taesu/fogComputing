@@ -12,7 +12,10 @@ import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 
 //시작하기 전
@@ -21,14 +24,19 @@ import java.util.*;
 // 3. client로 데이터 전송
 
 
-public class kafkaMongo {
+public class kafkaMongo2 {
     static fogSetting fogSetting = new fogSetting();
     static HashMap<String, Integer> fogPort;
-    static HashMap<Integer, int[]> fogBitMask;
+    static HashMap<Integer, double[]> fogBitMask;
 
+    static double qValue = fogSetting.getqValue();
+    static double pValue = fogSetting.getpValue();
 
-    static int epsilon = 1;
-    static double qValue = 0.0;
+    private static int fogPortNum=fogSetting.getFog2Port();
+
+    private static MongoClient mongo;
+    private static DB db;
+    private static DBCollection table;
 
     public static void sendCloud(String data) throws Exception {
         Socket socket = null;
@@ -58,22 +66,18 @@ public class kafkaMongo {
         }
     }
 
-    public static int[] addNoise(int[] originalBitMask, int[] fogBitMaskNoise) {
-        int[] result = new int[originalBitMask.length];
-        qValue = 1 / (Math.exp(epsilon) + 1);
-        System.out.print("noise : ");
+    public static double[] addNoise(double[] originalBitMask) {
+        double[] result = new double[originalBitMask.length];
         for (int i = 0; i < originalBitMask.length; i++) {
             double randomNum = (Math.random() * 1) + 0;
             if (originalBitMask[i] == 0) {
-                if (randomNum < qValue) result[i] = 1 + fogBitMaskNoise[i];
-                else result[i] = 0 + fogBitMaskNoise[i];
+                if (randomNum <= qValue) result[i] = 1;
+                else result[i] = 0;
             } else {
-                if (randomNum < 0.5) result[i] = 1 + fogBitMaskNoise[i];
-                else result[i] = 0 + fogBitMaskNoise[i];
+                if (randomNum <= pValue) result[i] = 1;
+                else result[i] = 0;
             }
-            System.out.print(result[i] + " ");
         }
-        System.out.println();
         return result;
     }
 
@@ -81,58 +85,58 @@ public class kafkaMongo {
     public static void addMongo(String topic, String data) {
         String[] dataTmp = data.split(",");
 
-        /**** Connect to MongoDB ****/
-        // Since 2.10.0, uses MongoClient
-        MongoClient mongo = new MongoClient("192.168.99.100", fogPort.get(topic));
+//        System.out.println(topic + " || " + data);
 
-        /**** Get database ****/
-        // if database doesn't exists, MongoDB will create it for you
-        DB db = mongo.getDB("testdb");
 
-        /**** Get collection / table from 'testdb' ****/
-        // if collection doesn't exists, MongoDB will create it for you
-        DBCollection table = db.getCollection("taxiData");
 
         /**** Insert ****/
         // create a document to store key and value
         BasicDBObject document = new BasicDBObject();
         document.put(dataTmp[0], dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
         table.insert(document);
-        mongo.close();
 
 
         /** Bit Mask **/
-        int fogPortNum = fogPort.get(topic);
-        int[] fogBit = fogSetting.getFogBitMask(fogPortNum);
-        int fogBitNum = fogSetting.getfogBitMaskIndex(topic);
-        fogBit[fogBitNum] += 1;
-        int originalTotal = 0;
-
         System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
-        System.out.print("original : ");
-        for (int i = 0; i < fogBit.length; i++) {
-            System.out.print(fogBit[i] + " ");
-            originalTotal += fogBit[i];
-        }
-        System.out.println();
 
-        int[] noiseFogBit = addNoise(fogBit, fogSetting.getFogBitMaskNoise(fogPortNum));
+        double[] dataBitMask = fogSetting.getInitBitMask().clone();
+        int fogBigIndex = fogSetting.getfogBitMaskIndex(topic);
+        dataBitMask[fogBigIndex]++;
+        System.out.println("data bit mask");
+        printBitmask(dataBitMask);
 
-        fogSetting.setFogBitMask(fogPortNum, fogBit);
+        double[] noiseFogBit = addNoise(dataBitMask);
+        System.out.println("noise bit mask");
+        printBitmask(noiseFogBit);
+
+//        double[] expectBitMask = expectNoise(noiseFogBit, originalTotal);
+        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum),fogSetting.fogBitMaskTotal(fogPortNum));
+        System.out.println("expect bit mask");
+        printBitmask(expectBitMask);
+
+        System.out.println("original bit mask");
+        printBitmask(fogSetting.getFogBitMask(fogPortNum));
+
+        System.out.println("noise bit mask");
+        printBitmask(fogSetting.getFogBitMaskNoise(fogPortNum));
+
+        fogSetting.setFogBitMask(fogPortNum, dataBitMask);
         fogSetting.setFogBitMaskNoise(fogPortNum, noiseFogBit);
-        fogSetting.setFogBitMaskExpect(fogPortNum, expectNoise(noiseFogBit, originalTotal));
+        fogSetting.setFogBitMaskExpect(fogPortNum, expectBitMask);
+        System.out.println();
     }
 
-    private static int[] expectNoise(int[] noiseFogBit, int n) {
-        int result[] = new int[noiseFogBit.length];
-        qValue = 1 / (Math.exp(epsilon) + 1);
-        System.out.print("expect : ");
-        for (int i = 0; i < noiseFogBit.length; i++) {
-            result[i] = (int) ((noiseFogBit[i] - n * qValue) / (0.5 - qValue));
-            System.out.print(result[i] + " ");
+    public static void printBitmask(double[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + " ");
         }
         System.out.println();
+    }
 
+    private static double[] expectNoise(double[] noiseFogBit, double n) {
+        double result[] = new double[noiseFogBit.length];
+        for (int i = 0; i < noiseFogBit.length; i++)
+            result[i] = ((noiseFogBit[i] - n * qValue) / (0.5 - qValue));
         return result;
     }
 
@@ -157,8 +161,20 @@ public class kafkaMongo {
     }
 
     public static void main(String[] args) throws Exception {
+
+        /**** Connect to MongoDB ****/
+        // Since 2.10.0, uses MongoClient
+        mongo = new MongoClient("192.168.99.100",fogPortNum);
+
+        /**** Get database ****/
+        // if database doesn't exists, MongoDB will create it for you
+        db = mongo.getDB("testdb");
+
+        /**** Get collection / table from 'testdb' ****/
+        // if collection doesn't exists, MongoDB will create it for you
+        table = db.getCollection("taxiData");
+
         fogPort = fogSetting.getFogPort();
-        System.out.println(fogPort);
         fogBitMask = fogSetting.getFogBitMask();
 
         dropDB();
@@ -172,20 +188,19 @@ public class kafkaMongo {
         configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");    // key deserializer
         configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  // value deserializer
 
+        List<String> topicList = fogSetting.getTopicList2();
 
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(configs);    // consumer 생성
-        consumer.subscribe(Arrays.asList("1111", "1114", "1117", "1120",
-                "1121", "1123", "1126", "1129",
-                "1130", "1132", "1135", "1138",
-                "1141", "1144", "1147", "1150",
-                "1153", "1154", "1156", "1159",
-                "1162", "1165", "1168", "1171", "1174"));      // topic 설정
+
+        consumer.subscribe(topicList);      // topic 설정
+
+        int kafkaSleepTime = fogSetting.getKafkaSleepTime();
 
         while (true) {  // 계속 loop를 돌면서 producer의 message를 띄운다.
             String sendData = "";
 
             //시간을 설정한다.
-            Thread.sleep(1000 * 10);
+            Thread.sleep(kafkaSleepTime);
 
             ConsumerRecords<String, String> records = consumer.poll(500);
             for (ConsumerRecord<String, String> record : records) {
@@ -193,7 +208,7 @@ public class kafkaMongo {
                 addMongo(s, record.value());
                 sendData += record.value() + "\n";
             }
-            sendCloud(sendData);
+            if (!sendData.equals("")) sendCloud(sendData);
         }
     }
 }

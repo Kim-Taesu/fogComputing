@@ -27,11 +27,14 @@ public class sendData {
                         firstLine = false;
                         continue;
                     }
+
+                    if(line.split(",").length!=4) continue;
+
                     byte[] as = line.getBytes("UTF-8");
                     OutputStream OS = CS.getOutputStream();
                     OS.flush();
                     OS.write(as);
-                    Thread.sleep(250);
+                    Thread.sleep(100);
                 }
 
             }

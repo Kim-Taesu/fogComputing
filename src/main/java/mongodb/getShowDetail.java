@@ -15,13 +15,13 @@ import java.util.Iterator;
 
 public class getShowDetail {
     HashMap<String, Integer> fogPort = new HashMap<String, Integer>();
-    HashMap<String, Integer> sigunguFog = new HashMap<String, Integer>();
+    HashMap<String, Integer> sigunguHash = new HashMap<String, Integer>();
 
     public getShowDetail(int port) {
         try {
             fogSetting fogSetting = new fogSetting();
-            sigunguFog = fogSetting.sigunguCode;
-            fogPort = fogSetting.fogPort;
+            sigunguHash = fogSetting.getSigunguCode();
+            fogPort = fogSetting.getFogPort();
 
             DatagramSocket ds = new DatagramSocket(port);
 
@@ -33,8 +33,11 @@ public class getShowDetail {
 
                 String location = new String(dp.getData()).trim();
 
-                String sigungiCode = sigunguFog.get(location).toString();
-                int fogNum = fogPort.get(sigungiCode);
+                String sigunguCode = sigunguHash.get(location).toString();
+                int fogNum = fogPort.get(sigunguCode);
+
+                System.out.println("location : " + location);
+                System.out.println("fogNum : " + fogNum);
 
                 /**** Connect to MongoDB ****/
                 // Since 2.10.0, uses MongoClient
@@ -53,8 +56,19 @@ public class getShowDetail {
                 Iterator<DBObject> documentList = table.find().iterator();
                 String sendData = "";
                 while (documentList.hasNext()) {
-                    String[] lineTmp = documentList.next().toString().split(" , ");
-                    sendData += lineTmp[1].replace("}","") +"\n";
+                    String line = documentList.next().toString();
+
+                    String[] lineTmp = line.split(" , ");
+
+                    String sendDataTmp = lineTmp[1].replace("}", "");
+                    String checkDataTmp= sendDataTmp.split(":")[1].split(",")[2].substring(0,4);
+
+                    System.out.println(sigunguCode + " : " + checkDataTmp);
+
+                    if(!checkDataTmp.equals(sigunguCode)) continue;
+
+
+                    sendData += sendDataTmp + "\n";
                 }
 
                 System.out.println(sendData);
@@ -72,6 +86,6 @@ public class getShowDetail {
     }
 
     public static void main(String[] args) throws Exception {
-        new getShowDetail(30123);
+        new getShowDetail(30126);
     }
 }

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d5b37b04-44bd-45b7-9b40-cfb1f1939cd6" name="Default Changelist" comment="" />
+    <list default="true" id="d5b37b04-44bd-45b7-9b40-cfb1f1939cd6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mongodb/fogSetting.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mongodb/fogSetting.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mongodb/getShowDetail.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mongodb/getShowDetail.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mongodb/kafkaMongo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/threadToKafka/sendData.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/threadToKafka/sendData.class" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,116 +24,164 @@
     <favorites_list name="fogKafka" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.63362247">
+    <splitter split-orientation="horizontal" split-proportion="0.4991587">
       <split-first>
-        <splitter split-orientation="horizontal" split-proportion="0.35923752">
-          <split-first>
-            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-              <file pinned="false" current-in-tab="true">
-                <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="342">
-                      <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-                      <folding>
-                        <element signature="imports" expanded="true" />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="114">
-                      <caret line="60" column="49" lean-forward="true" selection-start-line="60" selection-start-column="49" selection-end-line="60" selection-end-column="49" />
-                      <folding>
-                        <element signature="imports" expanded="true" />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-            </leaf>
-          </split-first>
-          <split-second>
-            <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-              <file pinned="false" current-in-tab="true">
-                <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="342">
-                      <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-                      <folding>
-                        <element signature="imports" expanded="true" />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-            </leaf>
-          </split-second>
-        </splitter>
-      </split-first>
-      <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/serverKafka.java">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="424">
-                  <caret line="73" column="6" selection-start-line="73" selection-start-column="6" selection-end-line="73" selection-end-column="6" />
+                <state relative-caret-position="1197">
+                  <caret line="63" column="94" selection-start-line="63" selection-start-column="94" selection-end-line="63" selection-end-column="94" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#2517#2518#0" expanded="true" />
-                    <element signature="e#2547#2548#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/udpExample/UDPEchoServer.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="76">
-                  <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-                  <folding>
-                    <element signature="imports" expanded="true" />
+                    <element signature="e#387#404#0" expanded="true" />
+                    <element signature="e#466#483#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo1.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="323">
-                  <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+                <state relative-caret-position="756">
+                  <caret line="145" column="73" lean-forward="true" selection-start-line="145" selection-start-column="73" selection-end-line="145" selection-end-column="73" />
                   <folding>
-                    <element signature="e#121#138#0" expanded="true" />
-                    <element signature="e#196#213#0" expanded="true" />
-                    <element signature="e#502#519#0" expanded="true" />
-                    <element signature="e#5931#5932#0" expanded="true" />
-                    <element signature="e#5964#5965#0" expanded="true" />
-                    <element signature="e#6016#6017#0" expanded="true" />
-                    <element signature="e#6046#6047#0" expanded="true" />
-                    <element signature="e#6101#6102#0" expanded="true" />
-                    <element signature="e#6150#6151#0" expanded="true" />
-                    <element signature="e#6197#6198#0" expanded="true" />
-                    <element signature="e#6243#6244#0" expanded="true" />
-                    <element signature="e#6295#6296#0" expanded="true" />
-                    <element signature="e#6346#6347#0" expanded="true" />
-                    <element signature="e#6410#6411#0" expanded="true" />
-                    <element signature="e#6465#6466#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/example.java">
+            <entry file="file://$PROJECT_DIR$/src/main/java/fogServer/server_kafka.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="361">
-                  <caret line="21" column="62" selection-start-line="21" selection-start-column="62" selection-end-line="21" selection-end-column="62" />
+                <state relative-caret-position="482">
+                  <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
                 </state>
               </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/cloudServer/SimpleServer.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1425">
+                  <caret line="81" selection-start-line="81" selection-end-line="81" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="494">
+                  <caret line="152" column="24" selection-start-line="152" selection-start-column="24" selection-end-line="152" selection-end-column="24" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#121#138#0" expanded="true" />
+                    <element signature="e#196#213#0" expanded="true" />
+                    <element signature="e#502#519#0" expanded="true" />
+                    <element signature="e#616#626#0" expanded="true" />
+                    <element signature="e#675#684#0" expanded="true" />
+                    <element signature="e#1112#1120#0" expanded="true" />
+                    <element signature="e#1170#1178#0" expanded="true" />
+                    <element signature="e#1232#1240#0" expanded="true" />
+                    <element signature="e#1294#1302#0" expanded="true" />
+                    <element signature="e#1356#1364#0" expanded="true" />
+                    <element signature="e#3934#3935#0" expanded="true" />
+                    <element signature="e#3966#3967#0" expanded="true" />
+                    <element signature="e#4649#4650#0" expanded="true" />
+                    <element signature="e#4682#4683#0" expanded="true" />
+                    <element signature="e#4725#4726#0" expanded="true" />
+                    <element signature="e#4758#4759#0" expanded="true" />
+                    <element signature="e#4801#4802#0" expanded="true" />
+                    <element signature="e#4834#4835#0" expanded="true" />
+                    <element signature="e#4877#4878#0" expanded="true" />
+                    <element signature="e#4910#4911#0" expanded="true" />
+                    <element signature="e#5045#5046#0" expanded="true" />
+                    <element signature="e#5127#5128#0" expanded="true" />
+                    <element signature="e#5231#5232#0" expanded="true" />
+                    <element signature="e#5327#5328#0" expanded="true" />
+                    <element signature="e#5433#5434#0" expanded="true" />
+                    <element signature="e#6441#6442#0" expanded="true" />
+                    <element signature="e#6503#6504#0" expanded="true" />
+                    <element signature="e#6565#6566#0" expanded="true" />
+                    <element signature="e#6639#6640#0" expanded="true" />
+                    <element signature="e#6626#6627#0" expanded="true" />
+                    <element signature="e#6657#6658#0" expanded="true" />
+                    <element signature="e#6689#6690#0" expanded="true" />
+                    <element signature="e#6720#6721#0" expanded="true" />
+                    <element signature="e#6752#6753#0" expanded="true" />
+                    <element signature="e#6783#6784#0" expanded="true" />
+                    <element signature="e#6815#6816#0" expanded="true" />
+                    <element signature="e#6846#6847#0" expanded="true" />
+                    <element signature="e#6878#6879#0" expanded="true" />
+                    <element signature="e#6909#6910#0" expanded="true" />
+                    <element signature="e#6997#6998#0" expanded="true" />
+                    <element signature="e#7034#7035#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo2.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2755">
+                  <caret line="202" column="39" selection-start-line="202" selection-start-column="39" selection-end-line="202" selection-end-column="39" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo3.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="231">
+                  <caret line="192" lean-forward="true" selection-start-line="192" selection-end-line="192" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo4.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="231">
+                  <caret line="192" lean-forward="true" selection-start-line="192" selection-end-line="192" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo5.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="189">
+                  <caret line="181" column="85" lean-forward="true" selection-start-line="181" selection-start-column="85" selection-end-line="181" selection-end-column="85" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="570">
+                  <caret line="30" column="59" selection-start-line="30" selection-start-column="59" selection-end-line="30" selection-end-column="59" />
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$USER_HOME$/Desktop/taxiData.csv">
+              <provider selected="true" editor-type-id="LargeFileEditor" />
             </entry>
           </file>
         </leaf>
@@ -143,16 +201,30 @@
       <find>1117</find>
       <find>Seoul_Jongno-gu</find>
       <find>32790</find>
-      <find>32771</find>
       <find>fog</find>
       <find>fogport</find>
       <find>figBitMaskIndex</find>
       <find>fogInfo</find>
+      <find>userThread</find>
+      <find>1121</find>
+      <find>1211</find>
+      <find>g</find>
+      <find>fog5List</find>
+      <find>32771</find>
+      <find>sigunguFog</find>
+      <find>qValue</find>
+      <find>fogBitNum</find>
+      <find>32768</find>
+      <find>topicList</find>
+      <find>32772</find>
     </findStrings>
     <replaceStrings>
       <replace>fogPort</replace>
       <replace>fogBitMaskIndex</replace>
       <replace>fogPo</replace>
+      <replace>fog5</replace>
+      <replace>sigunguHash</replace>
+      <replace>fogBigIndex</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -194,10 +266,16 @@
         <option value="$PROJECT_DIR$/src/main/java/threadToKafka/client.java" />
         <option value="$PROJECT_DIR$/src/main/java/udpExample/UDPEchoServer.java" />
         <option value="$PROJECT_DIR$/src/main/java/mongodb/fogPort.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java" />
-        <option value="$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java" />
+        <option value="$USER_HOME$/Desktop/server_kafka.java" />
         <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo3.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo4.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo5.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java" />
         <option value="$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java" />
+        <option value="$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo1.java" />
       </list>
     </option>
   </component>
@@ -281,8 +359,13 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557476330376" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559560941391" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/bigdataCompetition-master/bigdataCompetition-master" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="mongodb" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -296,39 +379,13 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.kafkaMongo">
-    <configuration name="UDPEchoClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="udpExample.UDPEchoClient" />
-      <module name="fogKafka" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="udpExample.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UDPEchoServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="udpExample.UDPEchoServer" />
-      <module name="fogKafka" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="udpExample.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="Application.getShowDetail">
     <configuration name="getShowDetail" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="mongodb.getShowDetail" />
       <module name="fogKafka" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="udpExample.*" />
+          <option name="PATTERN" value="mongodb.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -336,12 +393,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="kafkaMongo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="mongodb.kafkaMongo" />
+    <configuration name="kafkaMongo2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mongodb.kafkaMongo2" />
       <module name="fogKafka" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="udpExample.*" />
+          <option name="PATTERN" value="mongodb.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -349,12 +406,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sendData" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="threadToKafka.sendData" />
+    <configuration name="kafkaMongo3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mongodb.kafkaMongo3" />
       <module name="fogKafka" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="threadToKafka.*" />
+          <option name="PATTERN" value="mongodb.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="kafkaMongo4" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mongodb.kafkaMongo4" />
+      <module name="fogKafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mongodb.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="kafkaMongo5" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="mongodb.kafkaMongo5" />
+      <module name="fogKafka" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mongodb.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -364,11 +447,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.sendData" />
-        <item itemvalue="Application.kafkaMongo" />
         <item itemvalue="Application.getShowDetail" />
-        <item itemvalue="Application.UDPEchoClient" />
-        <item itemvalue="Application.UDPEchoServer" />
+        <item itemvalue="Application.kafkaMongo5" />
+        <item itemvalue="Application.kafkaMongo4" />
+        <item itemvalue="Application.kafkaMongo3" />
+        <item itemvalue="Application.kafkaMongo2" />
       </list>
     </recent_temporary>
   </component>
@@ -385,8 +468,17 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="2481" height="1455" extended-state="6" />
+    <frame x="-11" y="-11" width="2481" height="1455" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
@@ -394,19 +486,19 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" sideWeight="0.5004608" side_tool="true" weight="0.28727886" />
       <window_info id="Image Layers" order="4" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.49953917" visible="true" weight="0.11028501" />
+      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.49953917" visible="true" weight="0.14952499" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.32980332" />
-      <window_info anchor="bottom" id="Messages" order="2" weight="0.31770045" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.535316" side_tool="true" visible="true" weight="0.2753404" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5006196" side_tool="true" weight="0.41149774" />
+      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.48244527" weight="0.3161876" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32952815" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.3290469" />
-      <window_info anchor="bottom" id="Run" order="6" visible="true" weight="0.42965204" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.39939487" />
-      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.39939487" />
+      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="9" sideWeight="0.4993804" weight="0.32980332" />
+      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.464684" visible="true" weight="0.2753404" />
       <window_info anchor="right" id="Theme Preview" order="0" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Palette&#9;" order="2" />
@@ -422,19 +514,19 @@
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" sideWeight="0.5004608" side_tool="true" weight="0.28727886" />
       <window_info id="Image Layers" order="4" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" sideWeight="0.49953917" visible="true" weight="0.11028501" />
+      <window_info content_ui="combo" id="Project" order="5" sideWeight="0.49953917" weight="0.14974761" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.32980332" />
-      <window_info anchor="bottom" id="Messages" order="2" weight="0.31811264" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" sideWeight="0.51796776" side_tool="true" visible="true" weight="0.3207262" />
+      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5006196" side_tool="true" weight="0.41149774" />
+      <window_info anchor="bottom" id="Messages" order="2" sideWeight="0.49814126" weight="0.31694403" />
       <window_info anchor="bottom" id="Version Control" order="3" weight="0.32952815" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.3290469" />
-      <window_info anchor="bottom" id="Run" order="6" weight="0.42965204" />
-      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.39939487" />
+      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="9" sideWeight="0.49979347" weight="0.32980332" />
+      <window_info anchor="bottom" id="Run" order="10" sideWeight="0.4820322" visible="true" weight="0.3207262" />
       <window_info anchor="right" id="Theme Preview" order="0" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
       <window_info anchor="right" id="Palette&#9;" order="2" />
@@ -470,9 +562,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/cloudServer.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/test.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/mysql/ConnectionTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/fogServer/start_thread_server">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1083">
@@ -488,23 +577,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/getShowDetail2.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/cloudServer/SimpleServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="23" column="38" selection-start-line="23" selection-start-column="38" selection-end-line="23" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/fogServer/server_kafka.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1387">
-          <caret line="73" column="6" selection-start-line="73" selection-start-column="6" selection-end-line="73" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/serverKafka.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="424">
@@ -527,16 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/udpExample/UDPEchoServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/client.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
@@ -544,13 +606,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/example.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="21" column="62" selection-start-line="21" selection-start-column="62" selection-end-line="21" selection-end-column="62" />
         </state>
       </provider>
     </entry>
@@ -588,54 +643,169 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo.java">
+    <entry file="file://$USER_HOME$/Desktop/server_kafka.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="60" column="49" lean-forward="true" selection-start-line="60" selection-start-column="49" selection-end-line="60" selection-end-column="49" />
+        <state relative-caret-position="418">
+          <caret line="33" column="34" lean-forward="true" selection-start-line="33" selection-start-column="34" selection-end-line="33" selection-end-column="34" />
+          <folding>
+            <element signature="e#481#482#0" expanded="true" />
+            <element signature="e#509#510#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fogServer/start_thread_server">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/example.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="21" column="62" selection-start-line="21" selection-start-column="62" selection-end-line="21" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/udpExample/UDPEchoServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo3.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="192" lean-forward="true" selection-start-line="192" selection-end-line="192" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo4.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="192" lean-forward="true" selection-start-line="192" selection-end-line="192" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo5.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="181" column="85" lean-forward="true" selection-start-line="181" selection-start-column="85" selection-end-line="181" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/taxiData.csv">
+      <provider selected="true" editor-type-id="LargeFileEditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="30" column="59" selection-start-line="30" selection-start-column="59" selection-end-line="30" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/fogServer/server_kafka.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="482">
+          <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cloudServer/SimpleServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1425">
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_201/src.zip!/java/net/DatagramSocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="692" selection-start-line="692" selection-end-line="692" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2755">
+          <caret line="202" column="39" selection-start-line="202" selection-start-column="39" selection-end-line="202" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1197">
+          <caret line="63" column="94" selection-start-line="63" selection-start-column="94" selection-end-line="63" selection-end-column="94" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#387#404#0" expanded="true" />
+            <element signature="e#466#483#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/fogSetting.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="494">
+          <caret line="152" column="24" selection-start-line="152" selection-start-column="24" selection-end-line="152" selection-end-column="24" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#121#138#0" expanded="true" />
             <element signature="e#196#213#0" expanded="true" />
             <element signature="e#502#519#0" expanded="true" />
-            <element signature="e#5931#5932#0" expanded="true" />
-            <element signature="e#5964#5965#0" expanded="true" />
-            <element signature="e#6016#6017#0" expanded="true" />
-            <element signature="e#6046#6047#0" expanded="true" />
-            <element signature="e#6101#6102#0" expanded="true" />
-            <element signature="e#6150#6151#0" expanded="true" />
-            <element signature="e#6197#6198#0" expanded="true" />
-            <element signature="e#6243#6244#0" expanded="true" />
-            <element signature="e#6295#6296#0" expanded="true" />
-            <element signature="e#6346#6347#0" expanded="true" />
-            <element signature="e#6410#6411#0" expanded="true" />
-            <element signature="e#6465#6466#0" expanded="true" />
+            <element signature="e#616#626#0" expanded="true" />
+            <element signature="e#675#684#0" expanded="true" />
+            <element signature="e#1112#1120#0" expanded="true" />
+            <element signature="e#1170#1178#0" expanded="true" />
+            <element signature="e#1232#1240#0" expanded="true" />
+            <element signature="e#1294#1302#0" expanded="true" />
+            <element signature="e#1356#1364#0" expanded="true" />
+            <element signature="e#3934#3935#0" expanded="true" />
+            <element signature="e#3966#3967#0" expanded="true" />
+            <element signature="e#4649#4650#0" expanded="true" />
+            <element signature="e#4682#4683#0" expanded="true" />
+            <element signature="e#4725#4726#0" expanded="true" />
+            <element signature="e#4758#4759#0" expanded="true" />
+            <element signature="e#4801#4802#0" expanded="true" />
+            <element signature="e#4834#4835#0" expanded="true" />
+            <element signature="e#4877#4878#0" expanded="true" />
+            <element signature="e#4910#4911#0" expanded="true" />
+            <element signature="e#5045#5046#0" expanded="true" />
+            <element signature="e#5127#5128#0" expanded="true" />
+            <element signature="e#5231#5232#0" expanded="true" />
+            <element signature="e#5327#5328#0" expanded="true" />
+            <element signature="e#5433#5434#0" expanded="true" />
+            <element signature="e#6441#6442#0" expanded="true" />
+            <element signature="e#6503#6504#0" expanded="true" />
+            <element signature="e#6565#6566#0" expanded="true" />
+            <element signature="e#6639#6640#0" expanded="true" />
+            <element signature="e#6626#6627#0" expanded="true" />
+            <element signature="e#6657#6658#0" expanded="true" />
+            <element signature="e#6689#6690#0" expanded="true" />
+            <element signature="e#6720#6721#0" expanded="true" />
+            <element signature="e#6752#6753#0" expanded="true" />
+            <element signature="e#6783#6784#0" expanded="true" />
+            <element signature="e#6815#6816#0" expanded="true" />
+            <element signature="e#6846#6847#0" expanded="true" />
+            <element signature="e#6878#6879#0" expanded="true" />
+            <element signature="e#6909#6910#0" expanded="true" />
+            <element signature="e#6997#6998#0" expanded="true" />
+            <element signature="e#7034#7035#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/threadToKafka/sendData.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/kafkaMongo1.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="18" column="37" lean-forward="true" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/mongodb/getShowDetail.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="756">
+          <caret line="145" column="73" lean-forward="true" selection-start-line="145" selection-start-column="73" selection-end-line="145" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
