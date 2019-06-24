@@ -35,12 +35,8 @@ public class fogSetting {
     private int fog5Port = 32772;
 
     private double[] initBitMask = {0.0, 0.0, 0.0, 0.0, 0.0};
-
     private Double epsilon = 1.0;
-
     private double qValue = 1 / (Math.exp(epsilon) + 1);
-//    private double qValue = 0;
-
     private double pValue = 0.5;
 
 
@@ -83,12 +79,6 @@ public class fogSetting {
         for (int i = 0; i < fog1.length; i++) topicList3.add(fog3[i]);
         for (int i = 0; i < fog1.length; i++) topicList4.add(fog4[i]);
         for (int i = 0; i < fog1.length; i++) topicList5.add(fog5[i]);
-
-//        for (int i = 0; i < fogList.size(); i++) {
-//            for (int j = 0; j < fogList.get(i).length; j++) {
-//                topicList.add(fogList.get(i)[j]);
-//            }
-//        }
 
         fogPortList.add(fog1Port);
         fogPortList.add(fog2Port);

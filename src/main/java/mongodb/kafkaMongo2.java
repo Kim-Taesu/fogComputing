@@ -37,6 +37,8 @@ public class kafkaMongo2 {
     private static MongoClient mongo;
     private static DB db;
     private static DBCollection table;
+    private static DBCollection noiseBitTable;
+    private static DBCollection BitTable;
 
     public static void sendCloud(String data) throws Exception {
         Socket socket = null;
@@ -81,42 +83,48 @@ public class kafkaMongo2 {
         return result;
     }
 
+    static void mongoInsert(String key, String dayTim, double[] value, DBCollection insertTable) {
+        {
+            HashMap<String,double[]> valueTmp = new HashMap<String, double[]>();
+            valueTmp.put(dayTim,value);
+            /**** Insert ****/
+            BasicDBObject document = new BasicDBObject();
+            document.put(key, valueTmp);
+            insertTable.insert(document);
+        }
+    }
+
 
     public static void addMongo(String topic, String data) {
         String[] dataTmp = data.split(",");
+        String taxiId = dataTmp[0];
+        String dayTime =topic + "|" +  dataTmp[1] + "|" + dataTmp[2];
 
-//        System.out.println(topic + " || " + data);
-
-
-
-        /**** Insert ****/
-        // create a document to store key and value
-        BasicDBObject document = new BasicDBObject();
-        document.put(dataTmp[0], dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
-        table.insert(document);
-
-
-        /** Bit Mask **/
         System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
 
         double[] dataBitMask = fogSetting.getInitBitMask().clone();
         int fogBigIndex = fogSetting.getfogBitMaskIndex(topic);
         dataBitMask[fogBigIndex]++;
+        double[] noiseFogBit = addNoise(dataBitMask);
+        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum), fogSetting.fogBitMaskTotal(fogPortNum));
+
+
+        /**** Insert ****/
+        BasicDBObject document = new BasicDBObject();
+        document.put(taxiId, dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
+        table.insert(document);
+
+        mongoInsert(taxiId, dayTime, noiseFogBit, noiseBitTable);
+        mongoInsert(taxiId, dayTime, dataBitMask, BitTable);
+
         System.out.println("data bit mask");
         printBitmask(dataBitMask);
-
-        double[] noiseFogBit = addNoise(dataBitMask);
         System.out.println("noise bit mask");
         printBitmask(noiseFogBit);
-
-//        double[] expectBitMask = expectNoise(noiseFogBit, originalTotal);
-        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum),fogSetting.fogBitMaskTotal(fogPortNum));
         System.out.println("expect bit mask");
         printBitmask(expectBitMask);
-
         System.out.println("original bit mask");
         printBitmask(fogSetting.getFogBitMask(fogPortNum));
-
         System.out.println("noise bit mask");
         printBitmask(fogSetting.getFogBitMaskNoise(fogPortNum));
 
@@ -146,17 +154,24 @@ public class kafkaMongo2 {
         while (key.hasNext()) {
             /**** Connect to MongoDB ****/
             // Since 2.10.0, uses MongoClient
-            MongoClient mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
+            mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
 
             /**** Get database ****/
             // if database doesn't exists, MongoDB will create it for you
-            DB db = mongo.getDB("testdb");
+            db = mongo.getDB("testdb");
             db.dropDatabase();
 //
+
             /**** Get collection / table from 'testdb' ****/
             // if collection doesn't exists, MongoDB will create it for you
-            DBCollection table = db.getCollection("taxiData");
+            table = db.getCollection("taxiData");
+            BitTable = db.getCollection("taxiDataBit");
+            noiseBitTable = db.getCollection("taxiDataNoiseBit");
             table.drop();
+//            /**** Get collection / table from 'testdb' ****/
+//            // if collection doesn't exists, MongoDB will create it for you
+//            DBCollection table = db.getCollection("taxiData");
+//            table.drop();
         }
     }
 
@@ -166,14 +181,9 @@ public class kafkaMongo2 {
         // Since 2.10.0, uses MongoClient
         mongo = new MongoClient("192.168.99.100",fogPortNum);
 
-        /**** Get database ****/
-        // if database doesn't exists, MongoDB will create it for you
-        db = mongo.getDB("testdb");
-
-        /**** Get collection / table from 'testdb' ****/
-        // if collection doesn't exists, MongoDB will create it for you
-        table = db.getCollection("taxiData");
-
+//        /**** Get database ****/
+//        // if database doesn't exists, MongoDB will create it for you
+//        db = mongo.getDB("testdb");
         fogPort = fogSetting.getFogPort();
         fogBitMask = fogSetting.getFogBitMask();
 

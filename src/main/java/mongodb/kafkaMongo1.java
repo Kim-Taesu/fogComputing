@@ -1,5 +1,20 @@
 package mongodb;
 
+/*
+
+
+시작하기 전
+1. 카프카 서버(117.16.123.192) start_thread_server 실행
+2. 클라우드 서버(117.16.123.194) startGetFog 실행
+3. threadToKafka.senData를 실행하여 client로 데이터 전송
+
+실행 과정
+1. 카프카 Consumer를 이용하여 택시 데이터 수신
+2. 데이터를 비트마스크로 변경 후 해당 시군구에 있는 비트는 +1
+3. 노이즈를 추가하여 노이즈비트마스크 생성
+4. 원본 비트마스크와 노이즈추가된 비트마스크를 몽고디비에 저장 (각자 다른 collection을 생성하여 관리)
+ */
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
@@ -16,12 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
-
-//시작하기 전
-// 1. 카프카 서버 start_thread_server 실행
-// 2. 클라우드 서버 startGetFog 실행
-// 3. client로 데이터 전송
 
 
 public class kafkaMongo1 {
@@ -44,7 +53,6 @@ public class kafkaMongo1 {
         OutputStream os = null;
         OutputStreamWriter osw = null;
         BufferedWriter bw = null;
-
         try {
             socket = new Socket("117.16.123.194", 4040);
             os = socket.getOutputStream();
@@ -53,7 +61,6 @@ public class kafkaMongo1 {
 
             bw.write(data);
             bw.flush();
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -67,7 +74,7 @@ public class kafkaMongo1 {
         }
     }
 
-    public static double[] addNoise(double[] originalBitMask, String taxiId) {
+    public static double[] addNoise(double[] originalBitMask) {
         double[] result = new double[originalBitMask.length];
         for (int i = 0; i < originalBitMask.length; i++) {
             double randomNum = (Math.random() * 1) + 0;
@@ -79,54 +86,53 @@ public class kafkaMongo1 {
                 else result[i] = 0;
             }
         }
-
-        /**** Insert ****/
-        // create a document to store key and value
-        BasicDBObject document = new BasicDBObject();
-        document.put(taxiId, result);
-        table.insert(document);
-
-
         return result;
+    }
+
+    static void mongoInsert(String key, String dayTim, double[] value, DBCollection insertTable) {
+        {
+            HashMap<String, double[]> valueTmp = new HashMap<String, double[]>();
+            valueTmp.put(dayTim, value);
+            /**** Insert ****/
+            BasicDBObject document = new BasicDBObject();
+            document.put(key, valueTmp);
+            insertTable.insert(document);
+        }
+
     }
 
 
     public static void addMongo(String topic, String data) {
         String[] dataTmp = data.split(",");
         String taxiId = dataTmp[0];
-        /**** Insert ****/
-        // create a document to store key and value
-        BasicDBObject document = new BasicDBObject();
-        document.put(dataTmp[0], dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
-        table.insert(document);
+        String dayTime = topic + "|" + dataTmp[1] + "|" + dataTmp[2];
 
-        /** Bit Mask **/
 
         System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
 
         double[] dataBitMask = fogSetting.getInitBitMask().clone();
         int fogBigIndex = fogSetting.getfogBitMaskIndex(topic);
         dataBitMask[fogBigIndex]++;
-        System.out.println("data bit mask");
-        printBitmask(dataBitMask);
+        double[] noiseFogBit = addNoise(dataBitMask);
+        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum), fogSetting.fogBitMaskTotal(fogPortNum));
+
 
         /**** Insert ****/
-        // create a document to store key and value
-        document = new BasicDBObject();
-        document.put(dataTmp[0], dataBitMask);
-        BitTable.insert(document);
+        BasicDBObject document = new BasicDBObject();
+        document.put(taxiId, dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
+        table.insert(document);
 
-        double[] noiseFogBit = addNoise(dataBitMask, taxiId);
+        mongoInsert(taxiId, dayTime, noiseFogBit, noiseBitTable);
+        mongoInsert(taxiId, dayTime, dataBitMask, BitTable);
+
+        System.out.println("data bit mask");
+        printBitmask(dataBitMask);
         System.out.println("noise bit mask");
         printBitmask(noiseFogBit);
-
-        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum), fogSetting.fogBitMaskTotal(fogPortNum));
         System.out.println("expect bit mask");
         printBitmask(expectBitMask);
-
         System.out.println("original bit mask");
         printBitmask(fogSetting.getFogBitMask(fogPortNum));
-
         System.out.println("noise bit mask");
         printBitmask(fogSetting.getFogBitMaskNoise(fogPortNum));
 
@@ -137,9 +143,8 @@ public class kafkaMongo1 {
     }
 
     public static void printBitmask(double[] arr) {
-        for (int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++)
             System.out.print(arr[i] + " ");
-        }
         System.out.println();
     }
 
@@ -156,40 +161,32 @@ public class kafkaMongo1 {
         while (key.hasNext()) {
             /**** Connect to MongoDB ****/
             // Since 2.10.0, uses MongoClient
-            MongoClient mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
+            mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
 
             /**** Get database ****/
             // if database doesn't exists, MongoDB will create it for you
-            DB db = mongo.getDB("testdb");
+            db = mongo.getDB("testdb");
             db.dropDatabase();
-//
+
             /**** Get collection / table from 'testdb' ****/
             // if collection doesn't exists, MongoDB will create it for you
             table = db.getCollection("taxiData");
-            BitTable = db.getCollection("taxiData");
-            noiseBitTable = db.getCollection("taxiData");
+            BitTable = db.getCollection("taxiDataBit");
+            noiseBitTable = db.getCollection("taxiDataNoiseBit");
             table.drop();
         }
     }
 
     public static void main(String[] args) throws Exception {
         /**** Connect to MongoDB ****/
-        // Since 2.10.0, uses MongoClient
         mongo = new MongoClient("192.168.99.100", fogPortNum);
-
-        /**** Get database ****/
-        // if database doesn't exists, MongoDB will create it for you
-        db = mongo.getDB("testdb");
-
-        /**** Get collection / table from 'testdb' ****/
-        // if collection doesn't exists, MongoDB will create it for you
-        table = db.getCollection("taxiData");
-
+//        /**** Get database ****/
+//        db = mongo.getDB("testdb");
         fogPort = fogSetting.getFogPort();
         fogBitMask = fogSetting.getFogBitMask();
 
         dropDB();
-        System.out.println("drop DB");
+        System.out.println("init DB");
 
         Properties configs = new Properties();
         // 환경 변수 설정
