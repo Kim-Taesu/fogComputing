@@ -4,7 +4,7 @@ import com.mongodb.*;
 
 import java.util.Date;
 
-public class example {
+public class mongo_example {
     public static void main(String[] args) throws Exception {
 
         try {

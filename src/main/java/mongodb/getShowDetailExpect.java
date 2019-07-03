@@ -22,6 +22,7 @@ public class getShowDetailExpect {
             fogSetting fogSetting = new fogSetting();
             sigunguHash = fogSetting.getSigunguCode();
             fogPort = fogSetting.getFogPort();
+            double qValue = fogSetting.getqValue();
 
             DatagramSocket ds = new DatagramSocket(port);
 
@@ -58,27 +59,63 @@ public class getShowDetailExpect {
 
                 /**** Find and display ****/
                 Iterator<DBObject> documentList = table.find().iterator();
-                String sendData = "";
+
+                HashMap<String, Double> dataStatus = new HashMap<String, Double>();
+                dataStatus.put("00:00~06:00", 0.0);
+                dataStatus.put("06:00~12:00", 0.0);
+                dataStatus.put("12:00~18:00", 0.0);
+                dataStatus.put("18:00~24:00", 0.0);
+
+                HashMap<String, Double> totalCount = new HashMap<String, Double>();
+                totalCount.put("00:00~06:00", 0.0);
+                totalCount.put("06:00~12:00", 0.0);
+                totalCount.put("12:00~18:00", 0.0);
+                totalCount.put("18:00~24:00", 0.0);
+
                 while (documentList.hasNext()) {
                     String line = documentList.next().toString();
-                    System.out.println(line);
-
-//                    String[] lineTmp = line.split(" , ")[1].split(" : ");
+//                    System.out.println(line);
                     String[] lineTmp = line.split(" : ");
-//                    for (int i = 0; i < lineTmp.length; i++)
-//                        System.out.println(lineTmp[i]);
-                    String taxiId = lineTmp[2].split(" , ")[1];
                     String codeDayTime = lineTmp[3].substring(2);
-                    String[] noiseBit = lineTmp[4].substring(2).replaceAll("]}}", "").split(" , ");
 
-                    System.out.println(codeDayTime.split("\\|")[0].substring(1) + " ::: " + sigunguCode);
-                    if (codeDayTime.split("\\|")[0].substring(1).equals(sigunguCode))
-                        sendData += taxiId + " : " + codeDayTime + "\n";
-                    else continue;
+                    String[] timeTmp = codeDayTime.split("\\|")[2].replace("\"","").split("");
+
+                    int time = 0;
+                    if (timeTmp[0].equals("0")) {
+                        time = Integer.parseInt(timeTmp[1]);
+                    } else {
+                        time = Integer.parseInt(timeTmp[0]) * 10 + Integer.parseInt(timeTmp[1]);
+                    }
+
+                    if (time <= 12) totalCount.put("00:00~06:00", totalCount.get("00:00~06:00") + 1);
+                    else if (time <= 24) totalCount.put("06:00~12:00", totalCount.get("06:00~12:00") + 1);
+                    else if (time <= 36) totalCount.put("12:00~18:00", totalCount.get("12:00~18:00") + 1);
+                    else totalCount.put("18:00~24:00", totalCount.get("18:00~24:00") + 1);
+
+                    String[] noiseBit = lineTmp[4].substring(2).replaceAll("]}}", "").split(" , ");
+                    // correct location
+                    if (Double.parseDouble(noiseBit[fogBitIndex]) > 0) {
+                        if (time <= 12) dataStatus.put("00:00~06:00", dataStatus.get("00:00~06:00") + 1);
+                        else if (time <= 24) dataStatus.put("06:00~12:00", dataStatus.get("06:00~12:00") + 1);
+                        else if (time <= 36) dataStatus.put("12:00~18:00", dataStatus.get("12:00~18:00") + 1);
+                        else dataStatus.put("18:00~24:00", dataStatus.get("18:00~24:00") + 1);
+                    }
                 }
 
-                System.out.println(sendData);
-                byte[] sendByte = sendData.getBytes();
+//                System.out.println(totalCount);
+//                System.out.println(dataStatus);
+
+                dataStatus.put("00:00~06:00", (dataStatus.get("00:00~06:00") - totalCount.get("00:00~06:00") * qValue) / (0.5 - qValue));
+                dataStatus.put("06:00~12:00", (dataStatus.get("06:00~12:00") - totalCount.get("06:00~12:00") * qValue) / (0.5 - qValue));
+                dataStatus.put("12:00~18:00", (dataStatus.get("12:00~18:00") - totalCount.get("12:00~18:00") * qValue) / (0.5 - qValue));
+                dataStatus.put("18:00~24:00", (dataStatus.get("18:00~24:00") - totalCount.get("18:00~24:00") * qValue) / (0.5 - qValue));
+
+//                System.out.println(dataStatus);
+
+                byte[] sendByte = (dataStatus.get("00:00~06:00") + "," +
+                        dataStatus.get("06:00~12:00") + "," +
+                        dataStatus.get("12:00~18:00") + "," +
+                        dataStatus.get("18:00~24:00")).getBytes();
 
                 InetAddress ia = dp.getAddress();
                 dp = new DatagramPacket(sendByte, sendByte.length, ia, port);
@@ -90,6 +127,6 @@ public class getShowDetailExpect {
     }
 
     public static void main(String[] args) throws Exception {
-        new getShowDetailExpect(30125);
+        new getShowDetailExpect(30131);
     }
 }

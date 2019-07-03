@@ -1,9 +1,7 @@
-package mongodb;
+package mongodb.oldData;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
+import mongodb.fogSetting;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -24,21 +22,20 @@ import java.util.Properties;
 // 3. client로 데이터 전송
 
 
-public class kafkaMongo3 {
-    static fogSetting fogSetting = new fogSetting();
+public class kafkaMongo2 {
+    static mongodb.fogSetting fogSetting = new fogSetting();
     static HashMap<String, Integer> fogPort;
     static HashMap<Integer, double[]> fogBitMask;
 
     static double qValue = fogSetting.getqValue();
     static double pValue = fogSetting.getpValue();
 
-    private static int fogPortNum = fogSetting.getFog3Port();
+    private static int fogPortNum = fogSetting.getFog2Port();
 
     private static MongoClient mongo;
     private static DB db;
     private static DBCollection table;
     private static DBCollection noiseBitTable;
-    private static DBCollection BitTable;
 
     public static void sendCloud(String data) throws Exception {
         Socket socket = null;
@@ -83,55 +80,49 @@ public class kafkaMongo3 {
         return result;
     }
 
-    static void mongoInsert(String key, String dayTim, double[] value, DBCollection insertTable) {
-        {
-            HashMap<String,double[]> valueTmp = new HashMap<String, double[]>();
-            valueTmp.put(dayTim,value);
-            /**** Insert ****/
-            BasicDBObject document = new BasicDBObject();
-            document.put(key, valueTmp);
-            insertTable.insert(document);
-        }
-    }
-
-
     public static void addMongo(String topic, String data) {
         String[] dataTmp = data.split(",");
         String taxiId = dataTmp[0];
-        String dayTime = topic + "|" + dataTmp[1] + "|" + dataTmp[2];
+        String topicDayTime = topic + "|" + dataTmp[1] + "|" + dataTmp[2];
 
-        System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
 
+//        System.out.println("topic : " + topic + ", fogPortNum : " + fogPortNum);
+
+        //original data bitmask
         double[] dataBitMask = fogSetting.getInitBitMask().clone();
         int fogBigIndex = fogSetting.getfogBitMaskIndex(topic);
         dataBitMask[fogBigIndex]++;
-        double[] noiseFogBit = addNoise(dataBitMask);
-        double[] expectBitMask = expectNoise(fogSetting.getFogBitMaskNoise(fogPortNum), fogSetting.fogBitMaskTotal(fogPortNum));
 
+        //noise data bitmask
+        double[] noiseFogBit = addNoise(dataBitMask);
 
         /**** Insert ****/
         BasicDBObject document = new BasicDBObject();
+        // data structure : taxiId, day,
         document.put(taxiId, dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
         table.insert(document);
 
-        mongoInsert(taxiId, dayTime, noiseFogBit, noiseBitTable);
-        mongoInsert(taxiId, dayTime, dataBitMask, BitTable);
+        HashMap<String, double[]> valueTmp = new HashMap<String, double[]>();
+        valueTmp.put(topicDayTime, noiseFogBit);
+        /**** Insert ****/
+        document = new BasicDBObject();
+        document.put(taxiId, valueTmp);
+        noiseBitTable.insert(document);
 
-        System.out.println("data bit mask");
-        printBitmask(dataBitMask);
-        System.out.println("noise bit mask");
-        printBitmask(noiseFogBit);
-        System.out.println("expect bit mask");
-        printBitmask(expectBitMask);
-        System.out.println("original bit mask");
-        printBitmask(fogSetting.getFogBitMask(fogPortNum));
-        System.out.println("noise bit mask");
-        printBitmask(fogSetting.getFogBitMaskNoise(fogPortNum));
-
-        fogSetting.setFogBitMask(fogPortNum, dataBitMask);
-        fogSetting.setFogBitMaskNoise(fogPortNum, noiseFogBit);
-        fogSetting.setFogBitMaskExpect(fogPortNum, expectBitMask);
-        System.out.println();
+//        /**** Find and display ****/
+//        Iterator<DBObject> documentList = table.find().iterator();
+//        while (documentList.hasNext())
+//            System.out.println(documentList.next().toString());
+//
+//        /**** Find and display ****/
+//        documentList = noiseBitTable.find().iterator();
+//        while (documentList.hasNext())
+//            System.out.println(documentList.next().toString());
+//        System.out.println("data bit mask");
+//        printBitmask(dataBitMask);
+//        System.out.println("noise bit mask");
+//        printBitmask(noiseFogBit);
+//        System.out.println();
     }
 
     public static void printBitmask(double[] arr) {
@@ -141,57 +132,24 @@ public class kafkaMongo3 {
         System.out.println();
     }
 
-    private static double[] expectNoise(double[] noiseFogBit, double n) {
-        double result[] = new double[noiseFogBit.length];
-        for (int i = 0; i < noiseFogBit.length; i++)
-            result[i] = ((noiseFogBit[i] - n * qValue) / (0.5 - qValue));
-        return result;
-    }
-
-    public static void dropDB() {
-        Iterator<String> key = fogPort.keySet().iterator();
-
-        while (key.hasNext()) {
-            /**** Connect to MongoDB ****/
-            // Since 2.10.0, uses MongoClient
-            mongo = new MongoClient("192.168.99.100", fogPort.get(key.next()));
-
-            /**** Get database ****/
-            // if database doesn't exists, MongoDB will create it for you
-            db = mongo.getDB("testdb");
-            db.dropDatabase();
-
-            /**** Get collection / table from 'testdb' ****/
-            // if collection doesn't exists, MongoDB will create it for you
-            table = db.getCollection("taxiData");
-            BitTable = db.getCollection("taxiDataBit");
-            noiseBitTable = db.getCollection("taxiDataNoiseBit");
-            table.drop();
-//            /**** Get collection / table from 'testdb' ****/
-//            // if collection doesn't exists, MongoDB will create it for you
-//            DBCollection table = db.getCollection("taxiData");
-//            table.drop();
-        }
-    }
 
     public static void main(String[] args) throws Exception {
         /**** Connect to MongoDB ****/
-        // Since 2.10.0, uses MongoClient
         mongo = new MongoClient("192.168.99.100", fogPortNum);
+        System.out.println(fogPortNum);
 
-//        /**** Get database ****/
-//        // if database doesn't exists, MongoDB will create it for you
-//        db = mongo.getDB("testdb");
-//
-//        /**** Get collection / table from 'testdb' ****/
-//        // if collection doesn't exists, MongoDB will create it for you
-//        table = db.getCollection("taxiData");
+        /**** Get database ****/
+        // if database doesn't exists, MongoDB will create it for you
+        db = mongo.getDB("testdb");
+        db.dropDatabase();
+        System.out.println("drop DB");
 
+        /**** Get collection / table from 'testdb' ****/
+        // if collection doesn't exists, MongoDB will create it for you
+        table = db.getCollection("taxiData");
+        noiseBitTable = db.getCollection("taxiDataNoiseBit");
         fogPort = fogSetting.getFogPort();
         fogBitMask = fogSetting.getFogBitMask();
-
-        dropDB();
-        System.out.println("drop DB");
 
         Properties configs = new Properties();
         // 환경 변수 설정
@@ -201,19 +159,17 @@ public class kafkaMongo3 {
         configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");    // key deserializer
         configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  // value deserializer
 
-        List<String> topicList = fogSetting.getTopicList3();
-
+        List<String> topicList = fogSetting.getTopicList2();
         KafkaConsumer<String, String> consumer = new KafkaConsumer<String, String>(configs);    // consumer 생성
-
         consumer.subscribe(topicList);      // topic 설정
         int kafkaSleepTime = fogSetting.getKafkaSleepTime();
 
+        System.out.println(topicList);
+
         while (true) {  // 계속 loop를 돌면서 producer의 message를 띄운다.
             String sendData = "";
-
             //시간을 설정한다.
             Thread.sleep(kafkaSleepTime);
-
             ConsumerRecords<String, String> records = consumer.poll(500);
             for (ConsumerRecord<String, String> record : records) {
                 String s = record.topic();
