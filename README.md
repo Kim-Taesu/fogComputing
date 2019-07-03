@@ -11,26 +11,21 @@ client(device), fog server, kafka server, cloud server
 1. 데이터를 받고 토픽별로 분산 저장한다.
 
 ###### fog server
-1. 도커를 사용하여 hbase with java 컨테이너를 띄운다.
-2. kafka server로부터 데이터를 받고 각 fog hbase 컨테이너에 저장.
-3. cloud server로 받은 데이터 전송
-4. getShowDetail class 를 이용하여 각 구의 시간별 택시 수를 확인한다.
+1. 도커를 사용하여 mongoDB 컨테이너를 띄운다.
+2. kafka server로부터 데이터를 받고 원본데이터에 노이즈를 추가한다.
+3. 원본데이터와, 노이즈 데이터를 각 행정구에 맞는 fognode의 mongoDB 컨테이너에 저장.
+4. data homepage에서 각 행정구를 출력하면 getShowDetail,getShowDetailExpect class 를 이용하여 각 구의 시간별 택시 수를 확인한다.
 
 ###### cloud server
-1. 데이터를 받으면 파이썬을 통해 서울 택시 통계를 지도 파일로 출력한다. (svg file)
-2. 웹 서버로 
-
+1. 시간 주기를 설정하여 fog server의 mongoDB 컨테이너의 데이터를 read하여 현재 현황을 json 파일로 저장한다.
+2. 1번에서 저장한 json파일을 이용해 data homepage에 heatmap과 pie chart를 갱신한다.
 
 ### 과정
 -------------------------------
-1. kafka consumer로 kafka 서버에서 지정된 토픽의 갱신된 내용을 가져온다.
-2. 1번의 가져온 데이터를 각 fog 노드의 hbase로 저장한다.
-3. fog노드에서 저장된 데이터를 확인하고 cloud 서버로 데이터를 보낸다.
-
-### 참고사항
--------------------------------
-2-1. fog노드는 도커 컨테이너로 실행한다. (hbase, java)
-3-1. fog-cloud 데이터 통신은 멀티 쓰레드 통신으로 한다.
+1. client는 kafka server로 데이터를 전송한다.
+2. fog server는 시간 주기별로 kafka server로부터 데이터를 가져오고 노이즈를 추가하여 각 fognode의 mongoDB에 저장한다.
+3. cloud server는 시간 주기별로 fog node의 mongoDB의 데이터를 가져오고 데이터 현황을 json으로 저장한다.
+4. 저장한 json 파일을 토대로 data homepage에 heatmap과 pie chart를 갱신한다.
 
 ### 데이터
 -------------------------------
