@@ -1,9 +1,0 @@
-#!/bin/bash
-
-
-./bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group taxiData --all-topics --reset-offsets --to-earliest --execute
-
-
-javac -cp .:./zookeeper-3.4.13.jar:./kafka-clients-2.1.0.jar:./scala-library-2.11.8.jar:./slf4j-api-1.7.25.jar:./kafka_2.12-2.1.0.jar server_kafka.java
-
-java -cp .:./zookeeper-3.4.13.jar:./kafka-clients-2.1.0.jar:./scala-library-2.11.8.jar:./slf4j-api-1.7.25.jar:./kafka_2.12-2.1.0.jar server_kafka
