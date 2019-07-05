@@ -97,6 +97,6 @@ public class getShowDetail {
     }
 
     public static void main(String[] args) throws Exception {
-        new getShowDetail(30120);
+        new getShowDetail(30123);
     }
 }

@@ -39,10 +39,10 @@ public class getShowDetailExpect {
 
                 int fogBitIndex = fogSetting.getfogBitMaskIndex(sigunguCode);
 
-                System.out.println("location : " + location);
-                System.out.println("sigunguCode : " + sigunguCode);
-                System.out.println("fogBitIndex : " + fogBitIndex);
-                System.out.println("fogNum : " + fogNum);
+//                System.out.println("location : " + location);
+//                System.out.println("sigunguCode : " + sigunguCode);
+//                System.out.println("fogBitIndex : " + fogBitIndex);
+//                System.out.println("fogNum : " + fogNum);
 
                 /**** Connect to MongoDB ****/
                 // Since 2.10.0, uses MongoClient
@@ -127,6 +127,6 @@ public class getShowDetailExpect {
     }
 
     public static void main(String[] args) throws Exception {
-        new getShowDetailExpect(30131);
+        new getShowDetailExpect(30132);
     }
 }

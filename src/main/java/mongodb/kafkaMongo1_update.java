@@ -1,8 +1,6 @@
 package mongodb;
 
 /*
-
-
 시작하기 전
 1. 카프카 서버(117.16.123.192) start_thread_server 실행
 2. 클라우드 서버(117.16.123.194) startGetFog 실행
@@ -11,7 +9,6 @@ package mongodb;
 기능
 1. 카프카로부터 데이터를 시간 주기마다 가져온다.
 2. 가져온 카프카 데이터에 노이즈를 추가하고 원본 데이터, 노이즈 데이터를 몽고디비에 저장한다.
-
 */
 
 import com.mongodb.BasicDBObject;

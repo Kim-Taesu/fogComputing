@@ -9,7 +9,6 @@ public class fogSetting {
     HashMap<String, Integer> sigunguCode = new HashMap<String, Integer>();
     HashMap<Integer, double[]> fogBitMask = new HashMap<Integer, double[]>();
     HashMap<Integer, double[]> fogBitMaskNoise = new HashMap<Integer, double[]>();
-    HashMap<Integer, double[]> fogBitMaskExpect = new HashMap<Integer, double[]>();
     HashMap<String, Integer> fogBitMaskIndex = new HashMap<String, Integer>();
     List<String[]> fogList = new ArrayList<String[]>();
     List<Integer> fogPortList = new ArrayList<Integer>();
@@ -28,7 +27,7 @@ public class fogSetting {
     private List<String> topicList4 = new ArrayList<String>();
     private List<String> topicList5 = new ArrayList<String>();
 
-    private int fog1Port = 32768;
+    private int fog1Port = 32773;
     private int fog2Port = 32769;
     private int fog3Port = 32770;
     private int fog4Port = 32771;
@@ -93,7 +92,6 @@ public class fogSetting {
             }
             fogBitMask.put(fogPortList.get(i), initBitMask.clone());
             fogBitMaskNoise.put(fogPortList.get(i), initBitMask.clone());
-            fogBitMaskExpect.put(fogPortList.get(i), initBitMask.clone());
         }
 
         System.out.println("epsilon : " + epsilon);
@@ -130,40 +128,6 @@ public class fogSetting {
 
     public Integer getfogBitMaskIndex(String topic) {
         return fogBitMaskIndex.get(topic);
-    }
-
-    public double[] getFogBitMask(int fogPort) {
-        return fogBitMask.get(fogPort);
-    }
-
-    public double[] getFogBitMaskNoise(int fogPort) {
-        return fogBitMaskNoise.get(fogPort);
-    }
-
-    public void setFogBitMask(int fogPort, double[] fogBitMask) {
-        double[] tmp = this.fogBitMask.get(fogPort);
-        for (int i = 0; i < fogBitMask.length; i++)
-            tmp[i] += fogBitMask[i];
-        this.fogBitMask.put(fogPort, tmp);
-    }
-
-    public void setFogBitMaskNoise(int fogPort, double[] fogBitMaskNoise) {
-        double[] tmp = this.fogBitMaskNoise.get(fogPort);
-        for (int i = 0; i < fogBitMaskNoise.length; i++)
-            tmp[i] += fogBitMaskNoise[i];
-        this.fogBitMaskNoise.put(fogPort, tmp);
-    }
-
-    public void setFogBitMaskExpect(int fogPort, double[] fogBitMaskExpect) {
-        this.fogBitMaskExpect.put(fogPort, fogBitMaskExpect);
-    }
-
-    public double fogBitMaskTotal(int fogPort) {
-        double tmp[] = getFogBitMask(fogPort);
-        double total = 0;
-        for (int i = 0; i < tmp.length; i++)
-            total += tmp[i];
-        return total;
     }
 
     public HashMap<String, Integer> getSigunguCode() {
