@@ -1,8 +1,13 @@
 package mongodbKafka;
 
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 
 public class fogSetting {
     HashMap<String, Integer> fogPort = new HashMap<String, Integer>();
@@ -37,6 +42,45 @@ public class fogSetting {
     private Double epsilon = 1.0;
     private double qValue = 1 / (Math.exp(epsilon) + 1);
     private double pValue = 0.5;
+
+    private MongoClient mongo;
+    private KafkaConsumer<String, String> consumer;
+
+    private void initKafka() {
+        // 카프카 환경 변수 설정
+        Properties configs = new Properties();
+        configs.put("bootstrap.servers", "117.16.123.192:9092");     // kafka server host 및 port
+        configs.put("session.timeout.ms", "100000");             // session 설정
+        configs.put("group.id", "taxiData");                // topic 설정
+        configs.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");    // key deserializer
+        configs.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");  // value deserializer
+
+        // consumer 생성
+        consumer = new KafkaConsumer<String, String>(configs);
+    }
+
+    public KafkaConsumer<String, String> getConsumer() {
+        return consumer;
+    }
+
+    public void initMongo(int portNum) {
+        mongo = new MongoClient("192.168.99.100", portNum);
+        MongoDatabase originDB = mongo.getDatabase("originTaxiData");
+        for (int day = 1; day <= 7; day++) {
+            for (int time = 0; time <= 48; time++) {
+                if (time < 10) originDB.getCollection(day + "_0" + time);
+                else originDB.getCollection(day + "_" + time);
+            }
+        }
+
+        MongoDatabase noiseDB = mongo.getDatabase("noiseTaxiData");
+        for (int day = 1; day <= 7; day++) {
+            for (int time = 0; time <= 48; time++) {
+                if (time < 10) noiseDB.getCollection(day + "_0" + time);
+                else noiseDB.getCollection(day + "_" + time);
+            }
+        }
+    }
 
 
     public fogSetting() {
@@ -94,8 +138,15 @@ public class fogSetting {
             fogBitMaskNoise.put(fogPortList.get(i), initBitMask.clone());
         }
 
+        initKafka();
+
         System.out.println("epsilon : " + epsilon);
         System.out.println("qValue : " + qValue);
+    }
+
+    public MongoClient getMongo(int portNum) {
+        mongo = new MongoClient("192.168.99.100", portNum);
+        return mongo;
     }
 
     public List<String> getTopicList1() {

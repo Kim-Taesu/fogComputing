@@ -1,4 +1,4 @@
-package mongodbKafka;
+package mongodbKafka.old;
 
 /*
 
@@ -18,6 +18,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import mongodbKafka.fogSetting;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -27,14 +28,14 @@ import java.util.List;
 import java.util.Properties;
 
 
-public class kafkaMongo2_update {
-    static fogSetting fogSetting = new fogSetting();
+public class kafkaMongo3_update {
+    static mongodbKafka.fogSetting fogSetting = new fogSetting();
 
     static double qValue = fogSetting.getqValue();
     static double pValue = fogSetting.getpValue();
 
-    private static int fogPortNum = fogSetting.getFog2Port();
-    private static List<String> topicList = fogSetting.getTopicList2();
+    private static int fogPortNum = fogSetting.getFog3Port();
+    private static List<String> topicList = fogSetting.getTopicList3();
     private static MongoClient mongo;
     private static DB db;
     private static DBCollection table;
@@ -128,7 +129,7 @@ public class kafkaMongo2_update {
 
         while (true) {  // 계속 loop를 돌면서 producer의 message를 띄운다.
             //시간을 설정한다.
-            Thread.sleep(kafkaSleepTime);
+//            Thread.sleep(kafkaSleepTime);
             ConsumerRecords<String, String> records = consumer.poll(500);
             for (ConsumerRecord<String, String> record : records)
                 addMongo(record.topic(), record.value());
