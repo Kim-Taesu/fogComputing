@@ -28,7 +28,7 @@ public class kafkaMongo3_update2 {
     static double pValue = fogSetting.getpValue();
 
     private static int fogPortNum = fogSetting.getFog3Port();
-    private static List<String> topicList = fogSetting.getTopicList3();
+    private static List<String> topicList = fogSetting.getTopicList(fogPortNum);
 
     private static MongoClient mongo = fogSetting.getMongo(fogPortNum);
     private static MongoDatabase originDB = mongo.getDatabase("originTaxiData");
@@ -67,14 +67,26 @@ public class kafkaMongo3_update2 {
         /**** original Insert ****/
         Document document = new Document();
         // data structure : taxiId, day,
-        document.put(taxiId, dataTmp[1] + "," + dataTmp[2] + "," + dataTmp[3]);
-        MongoCollection originTable = originDB.getCollection(dataTmp[1] + "_" + dataTmp[2]);
+        document.put("taxiId", taxiId);
+        document.put("day", Integer.parseInt(dataTmp[1]));
+        document.put("time", Integer.parseInt(dataTmp[2]));
+        document.put("dest", dataTmp[3]);
+        MongoCollection originTable = originDB.getCollection(dataTmp[3]);
         originTable.insertOne(document);
 
         /**** noise Insert ****/
         document = new Document();
-        document.put(taxiId,topicDayTime+"|"+noiseFogBit);
-        MongoCollection noiseTable = noiseDB.getCollection(dataTmp[1] + "_" + dataTmp[2]);
+        String newString = "";
+        for (int i = 0; i < noiseFogBit.length; i++) {
+            if (i == noiseFogBit.length - 1) newString += noiseFogBit[i];
+            else newString += noiseFogBit[i] + ",";
+        }
+        document.put("taxiId", taxiId);
+        document.put("day", Integer.parseInt(dataTmp[1]));
+        document.put("time", Integer.parseInt(dataTmp[2]));
+        document.put("dest", dataTmp[3]);
+        document.put("bitMask", newString);
+        MongoCollection noiseTable = noiseDB.getCollection(dataTmp[3]);
         noiseTable.insertOne(document);
     }
 

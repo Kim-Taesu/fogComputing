@@ -4,39 +4,42 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class fogSetting {
     HashMap<String, Integer> fogPort = new HashMap<String, Integer>();
     HashMap<String, Integer> sigunguCode = new HashMap<String, Integer>();
-    HashMap<Integer, double[]> fogBitMask = new HashMap<Integer, double[]>();
-    HashMap<Integer, double[]> fogBitMaskNoise = new HashMap<Integer, double[]>();
     HashMap<String, Integer> fogBitMaskIndex = new HashMap<String, Integer>();
-    List<String[]> fogList = new ArrayList<String[]>();
+    List<ArrayList<String>> fogList = new ArrayList<ArrayList<String>>();
     List<Integer> fogPortList = new ArrayList<Integer>();
-
-    private int kafkaSleepTime = 1000 * 60;
-
-    private String fog1[] = {"1168", "1111", "1114", "1117", "1165"};
-    private String fog2[] = {"1121", "1120", "1171", "1123", "1126"};
-    private String fog3[] = {"1144", "1129", "1130", "1132", "1135"};
-    private String fog4[] = {"1138", "1141", "1150", "1147", "1153"};
-    private String fog5[] = {"1154", "1156", "1159", "1162", "1174"};
-
-    private List<String> topicList1 = new ArrayList<String>();
-    private List<String> topicList2 = new ArrayList<String>();
-    private List<String> topicList3 = new ArrayList<String>();
-    private List<String> topicList4 = new ArrayList<String>();
-    private List<String> topicList5 = new ArrayList<String>();
 
     private int fog1Port = 32773;
     private int fog2Port = 32769;
     private int fog3Port = 32770;
     private int fog4Port = 32771;
     private int fog5Port = 32772;
+
+    ArrayList<String> fog1 = new ArrayList<String>(Arrays.asList("1168", "1111", "1114", "1117", "1165"));
+    ArrayList<String> fog2 = new ArrayList<String>(Arrays.asList("1121", "1120", "1171", "1123", "1126"));
+    ArrayList<String> fog3 = new ArrayList<String>(Arrays.asList("1144", "1129", "1130", "1132", "1135"));
+    ArrayList<String> fog4 = new ArrayList<String>(Arrays.asList("1138", "1141", "1150", "1147", "1153"));
+    ArrayList<String> fog5 = new ArrayList<String>(Arrays.asList("1154", "1156", "1159", "1162", "1174"));
+
+//    private String fog1[] = {"1168", "1111", "1114", "1117", "1165"};
+//    private String fog2[] = {"1121", "1120", "1171", "1123", "1126"};
+//    private String fog3[] = {"1144", "1129", "1130", "1132", "1135"};
+//    private String fog4[] = {"1138", "1141", "1150", "1147", "1153"};
+//    private String fog5[] = {"1154", "1156", "1159", "1162", "1174"};
+
+    HashMap<Integer, ArrayList<String>> topicList = new HashMap<Integer, ArrayList<String>>() {
+        {
+            put(fog1Port, fog1);
+            put(fog2Port, fog2);
+            put(fog3Port, fog3);
+            put(fog4Port, fog4);
+            put(fog5Port, fog5);
+        }
+    };
 
     private double[] initBitMask = {0.0, 0.0, 0.0, 0.0, 0.0};
     private Double epsilon = 1.0;
@@ -116,13 +119,6 @@ public class fogSetting {
         fogList.add(fog4);
         fogList.add(fog5);
 
-
-        for (int i = 0; i < fog1.length; i++) topicList1.add(fog1[i]);
-        for (int i = 0; i < fog1.length; i++) topicList2.add(fog2[i]);
-        for (int i = 0; i < fog1.length; i++) topicList3.add(fog3[i]);
-        for (int i = 0; i < fog1.length; i++) topicList4.add(fog4[i]);
-        for (int i = 0; i < fog1.length; i++) topicList5.add(fog5[i]);
-
         fogPortList.add(fog1Port);
         fogPortList.add(fog2Port);
         fogPortList.add(fog3Port);
@@ -131,11 +127,11 @@ public class fogSetting {
 
         for (int i = 0; i < fogPortList.size(); i++) {
             for (int j = 0; j < fogList.size(); j++) {
-                fogPort.put(fogList.get(i)[j], fogPortList.get(i));
-                fogBitMaskIndex.put(fogList.get(j)[i], i);
+                // topic number : fog port
+                fogPort.put(fogList.get(i).get(j), fogPortList.get(i));
+                // topic number : index
+                fogBitMaskIndex.put(fogList.get(j).get(i), i);
             }
-            fogBitMask.put(fogPortList.get(i), initBitMask.clone());
-            fogBitMaskNoise.put(fogPortList.get(i), initBitMask.clone());
         }
 
         initKafka();
@@ -149,28 +145,8 @@ public class fogSetting {
         return mongo;
     }
 
-    public List<String> getTopicList1() {
-        return topicList1;
-    }
-
-    public List<String> getTopicList2() {
-        return topicList2;
-    }
-
-    public List<String> getTopicList3() {
-        return topicList3;
-    }
-
-    public List<String> getTopicList4() {
-        return topicList4;
-    }
-
-    public List<String> getTopicList5() {
-        return topicList5;
-    }
-
-    public HashMap<Integer, double[]> getFogBitMask() {
-        return fogBitMask;
+    public ArrayList<String> getTopicList(int fogPort) {
+        return topicList.get(fogPort);
     }
 
     public HashMap<String, Integer> getFogPort() {
@@ -215,9 +191,5 @@ public class fogSetting {
 
     public int getFog5Port() {
         return fog5Port;
-    }
-
-    public int getKafkaSleepTime() {
-        return kafkaSleepTime;
     }
 }

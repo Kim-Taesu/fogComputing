@@ -14,7 +14,7 @@ public class sendTaxiData {
             CS = new Socket();
             CS.connect(new InetSocketAddress("117.16.123.192", 4040));
 
-            File file = new File("C:\\Users\\KTS\\Desktop\\43_48.csv");
+            File file = new File("C:\\Users\\KTS\\Desktop\\monday.csv");
             String line = "";
 
             boolean firstLine = true;
